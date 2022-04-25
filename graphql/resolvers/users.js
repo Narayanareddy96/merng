@@ -6,10 +6,42 @@ require('dotenv').config();
 
 const JSON_SECRET_KEY = process.env.JSON_SECRET_KEY;
 
-const {validateRergisterInput} = require("../../util/validators"); 
-
+const {validateRergisterInput,validateLoginInput} = require("../../util/validators"); 
+const registorjwt = (user) =>{
+    return jwt.sign({
+        id:user.id,
+        email:user.email,
+        username:user.username
+    },JSON_SECRET_KEY,{expiresIn:'1h'})
+}
 module.exports = {
     Mutation: {
+        async login(_,{username,password}){
+            const {errors,valid} = validateLoginInput(username,password);
+            // console.log(errors,valid)
+            if(!valid){
+                throw new UserInputError('Errors', { errors });
+            }
+
+            const user = await User.findOne({username});
+            if (!user) {
+                errors.general = 'User not found';
+                throw new UserInputError('User not found', { errors });
+            }
+            const match = await bcryptjs.compare(password,user.password);
+            if (!match) {
+                errors.general = 'Wrong crendetials';
+                throw new UserInputError('Wrong crendetials', { errors });
+            }
+            const token  = await registorjwt(user)
+
+            return {
+                ...user._doc,
+                id: user._id,
+                token:token
+              };
+
+        },
         async register(
             _,
             {
@@ -21,7 +53,7 @@ module.exports = {
 
             // validate the user data
             const {errors,valid} = validateRergisterInput(username,email,password,confirmPassword);
-            console.log(errors,valid)
+            // console.log(errors,valid)
             if(!valid){
                 throw new UserInputError('Errors', { errors });
             }
@@ -43,11 +75,7 @@ module.exports = {
                 createdAt: new Date().toISOString()
               });
             const res = await newUser.save();
-            const token  = await jwt.sign({
-                id:res.id,
-                email:res.email,
-                username:res.username
-            },JSON_SECRET_KEY,{expiresIn:'1h'})
+            const token  = await registorjwt(res)
 
             return {
                 ...res._doc,
