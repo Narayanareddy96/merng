@@ -1,4 +1,6 @@
 const { ApolloServer } = require('apollo-server');
+const { PubSub } = require('graphql-subscriptions');
+
 const mongoose = require("mongoose");
 require('dotenv').config();
 
@@ -10,10 +12,11 @@ const resolvers = require("./graphql/resolvers");
 const typeDefs = require("./graphql/typeDefs");
 
 const MONGODB_CONNECT = process.env.MONGODB_CONNECT;
+const pubsub = new PubSub();
 
   // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers,context:({req})=>({req}) });
+const server = new ApolloServer({ typeDefs, resolvers,context:({req})=>({req,pubsub}) });
 
 // connecting the mongoDb server
 // console.log(process.env.MONGODB_CONNECT)
