@@ -13,7 +13,7 @@ const MONGODB_CONNECT = process.env.MONGODB_CONNECT;
 
   // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers,context:({req})=>({req}) });
 
 // connecting the mongoDb server
 // console.log(process.env.MONGODB_CONNECT)
