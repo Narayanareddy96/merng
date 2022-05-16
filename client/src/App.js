@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import MenuBar from './components/MenuBar'
+import NotFound404 from './pages/NotFound404';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" exact element={<Home />}></Route>
           <Route exact path="/login" element={<Login/>} ></Route>
           <Route exact path="/register" element={<Register/>} ></Route>
+          <Route path="*" element={<NotFound404/>} ></Route>
         </Routes>
         </Container>
     </Router>

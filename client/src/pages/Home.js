@@ -10,7 +10,7 @@ const Home = () => {
 
     const {
         loading,
-         error, data
+         data
       } = useQuery(FETCH_POSTS_QUERY);
 
 
