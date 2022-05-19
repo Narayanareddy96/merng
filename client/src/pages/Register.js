@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Button,Form } from 'semantic-ui-react';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../context/auth';
 
 import {
   useMutation,
@@ -8,6 +9,7 @@ import {
 } from "@apollo/client";
 
 const Register = (props) => {
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
   let navigate = useNavigate();
   const [values,setValues] = useState({
@@ -26,6 +28,7 @@ const Register = (props) => {
     ) {
       // console.log("in success")
       console.log(register)
+      context.login(register)
       navigate(`/`)
       // history.push("/");
     },
