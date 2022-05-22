@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MenuBar from "./components/MenuBar";
 import NotFound404 from "./pages/NotFound404";
+import { AuthRoute } from "./util/AuthRoute";
 
 function App() {
   return (
@@ -19,9 +20,11 @@ function App() {
         <Container>
           <MenuBar />
           <Routes>
-            <Route path="/" exact element={<Home />}></Route>
-            <Route exact path="/login" element={<Login />}></Route>
-            <Route exact path="/register" element={<Register />}></Route>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<AuthRoute />}>
+              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/register" element={<Register />} />
+            </Route>
             <Route path="*" element={<NotFound404 />}></Route>
           </Routes>
         </Container>
