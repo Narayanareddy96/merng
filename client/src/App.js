@@ -11,7 +11,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MenuBar from "./components/MenuBar";
 import NotFound404 from "./pages/NotFound404";
-import { AuthRoute } from "./util/AuthRoute";
+import { AuthRoute, ProtectedRoute } from "./util/AuthRoute";
+import AddPost from "./pages/AddPost";
 
 function App() {
   return (
@@ -25,6 +26,14 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/register" element={<Register />} />
             </Route>
+            <Route
+              path="addpost"
+              element={
+                <ProtectedRoute>
+                  <AddPost />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<NotFound404 />}></Route>
           </Routes>
         </Container>

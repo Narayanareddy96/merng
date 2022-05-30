@@ -15,6 +15,8 @@ const MenuBar = () => {
       <Menu.Item name={user.username} active as={Link} to="/" />
 
       <Menu.Menu position="right">
+        <Menu.Item name="Add Post" as={Link}
+          to="/addpost" onClick={handleItemClick} />
         <Menu.Item name="logout" onClick={logout} />
       </Menu.Menu>
     </Menu>
